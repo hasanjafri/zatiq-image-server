@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, jsonify
 from zatiq_food_images_client import ZatiqFoodImagesClient
 
 application = Flask(__name__)
@@ -21,7 +21,7 @@ def upload_image():
                 response = zatiq_images.save_image_locally(imagedata)
             except Exception as e:
                 return("Error \n %s" % (e))
-            return(response)
+            return(jsonify(response=response))
 
 @application.route('/delete/', methods=['POST'])
 def delete_image():
@@ -35,7 +35,7 @@ def delete_image():
                 response = zatiq_images.delete_local_image(imagepath)
             except Exception as e:
                 return("Error \n %s" % (e))
-            return(response)
+            return(jsonify(response=response))
 
 @application.route('/image/<imagepath>', methods=['GET'])
 def get_image(imagepath):
@@ -49,4 +49,4 @@ def get_image(imagepath):
 
 if __name__ == "__main__":
     application.debug = True
-    application.run()
+    application.run(host='0.0.0.0', port=5000)
