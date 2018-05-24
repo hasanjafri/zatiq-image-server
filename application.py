@@ -5,6 +5,10 @@ application = Flask(__name__)
 
 zatiq_images = ZatiqFoodImagesClient()
 
+@application.route('/')
+def test_server_online():
+    return("Server is online")
+
 @application.route('/upload/', methods=['POST'])
 def upload_image():
     if request.method == 'POST':
@@ -42,3 +46,7 @@ def get_image(imagepath):
         else:
             imagepath = jsonData['imagepath']
             return(send_file('./images'+imagepath, mimetype='image/png'))
+
+if __name__ == "__main__":
+    application.debug = True
+    application.run()
