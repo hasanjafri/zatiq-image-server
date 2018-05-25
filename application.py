@@ -21,7 +21,7 @@ def upload_image():
                 response = zatiq_images.save_image_locally(imagedata)
             except Exception as e:
                 return("Error \n %s" % (e))
-            return({'response': response})
+            return({'imagepath': response})
 
 @application.route('/delete/', methods=['POST'])
 def delete_image():
@@ -35,7 +35,7 @@ def delete_image():
                 response = zatiq_images.delete_local_image(imagepath)
             except Exception as e:
                 return("Error \n %s" % (e))
-            return({'response': response})
+            return({'image_status': response})
 
 @application.route('/image/<imagepath>', methods=['GET'])
 def get_image(imagepath):
