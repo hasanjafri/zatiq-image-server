@@ -12,11 +12,11 @@ def test_server_online():
 @application.route('/upload/', methods=['POST'])
 def upload_image():
     if request.method == 'POST':
-        jsonData = request.get_json()
-        if 'imagedata' not in jsonData:
+        jsonData = request.form['imagedata']
+        if jsonData == None:
             return('No image provided to upload', 400)
         else:
-            imagedata = jsonData['imagedata']
+            imagedata = jsonData
             try:
                 response = zatiq_images.save_image_locally(imagedata)
             except Exception as e:
@@ -26,11 +26,11 @@ def upload_image():
 @application.route('/delete/', methods=['POST'])
 def delete_image():
     if request.method == 'POST':
-        jsonData = request.get_json()
-        if 'imagepath' not in jsonData:
+        jsonData = request.form['imagepath']
+        if jsonData == None:
             return('No image path provided to delete', 400)
         else:
-            imagepath = jsonData['imagepath']
+            imagepath = jsonData
             try:
                 response = zatiq_images.delete_local_image(imagepath)
             except Exception as e:
