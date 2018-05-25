@@ -22,10 +22,9 @@ class ZatiqFoodImagesClient(object):
         if not imagedata:
             return('No image provided')
 
-        imgdata = base64.b64decode(imagedata)
         file_name = self.generate_unique_image_name()
         with open(file_name, 'wb') as f:
-            f.write(imgdata)
+            f.write(base64.decodebytes(imagedata))
         if self.check_image_name_exists(file_name) == True:
             return(file_name)
         else:
