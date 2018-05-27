@@ -1,7 +1,9 @@
-from flask import Flask, request, send_file, jsonify
+from flask import Flask, request, send_file, Response
+from flask_json import FlaskJSON, JsonError, json_response
 from zatiq_food_images_client import ZatiqFoodImagesClient
 
 application = Flask(__name__)
+FlaskJSON(application)
 
 zatiq_images = ZatiqFoodImagesClient()
 
@@ -20,8 +22,8 @@ def upload_image():
             try:
                 response = zatiq_images.save_image_locally(imagedata)
             except Exception as e:
-                return("Error \n %s" % (e))
-            return(jsonify(response=[response]))
+                return JsonError(description=e)
+        return json_response(response=response, headers_={'Content-Type': 'application/json'})
 
 @application.route('/delete/', methods=['POST'])
 def delete_image():
@@ -34,8 +36,8 @@ def delete_image():
             try:
                 response = zatiq_images.delete_local_image(imagepath)
             except Exception as e:
-                return("Error \n %s" % (e))
-            return(jsonify(response=[response]))
+                return JsonError(description=e)
+        return json_response(response=response, headers_={'Content-Type': 'application/json'})
 
 @application.route('/image/<imagepath>', methods=['GET'])
 def get_image(imagepath):
