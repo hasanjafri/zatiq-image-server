@@ -21,8 +21,9 @@ def upload_image():
                 response = zatiq_images.save_image_locally(imagedata)
             except Exception as e:
                 return("Error \n %s" % (e))
-        print(Response(response=make_response(response), status=200, mimetype='application/json'))
-        return Response(response=make_response(response), status=200, mimetype='application/json')
+        json_response = Response(response=make_response(response), status=200, mimetype='application/json')
+        print(json_response)
+        return(json_response)
 
 @application.route('/delete/', methods=['POST'])
 def delete_image():
