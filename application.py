@@ -24,6 +24,8 @@ def upload_image():
                 return("Error \n %s" % (e))
         response_dict = {'image_url': response}
         json_response = Response(response=json.dumps(response_dict), status=200, mimetype='application/json')
+        import pdb
+        pdb.set_trace()
         print(json_response)
         return(json_response)
 
