@@ -22,7 +22,8 @@ def upload_image():
                 response = zatiq_images.save_image_locally(imagedata)
             except Exception as e:
                 return("Error \n %s" % (e))
-        json_response = Response(response=json.dumps({'response': response}), status=200, mimetype='application/json')
+        response_dict = {'image_url': response}
+        json_response = Response(response=json.dumps(response_dict), status=200, mimetype='application/json')
         print(json_response)
         return(json_response)
 
@@ -38,7 +39,8 @@ def delete_image():
                 response = zatiq_images.delete_local_image(imagepath)
             except Exception as e:
                 return("Error \n %s" % (e))
-        return Response(response=make_response(response), status=200, mimetype='application/json')
+        response_dict = {'image_status': response}
+        return Response(response=json.dumps(response_dict), status=200, mimetype='application/json')
 
 @application.route('/image/<imagepath>', methods=['GET'])
 def get_image(imagepath):
