@@ -1,4 +1,5 @@
 from flask import Flask, request, send_file, Response, make_response
+import json
 from zatiq_food_images_client import ZatiqFoodImagesClient
 
 application = Flask(__name__)
@@ -21,7 +22,7 @@ def upload_image():
                 response = zatiq_images.save_image_locally(imagedata)
             except Exception as e:
                 return("Error \n %s" % (e))
-        json_response = Response(response=make_response(response), status=200, mimetype='application/json')
+        json_response = Response(response=json.dumps({'response': response}), status=200, mimetype='application/json')
         print(json_response)
         return(json_response)
 
