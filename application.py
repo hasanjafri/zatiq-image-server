@@ -1,5 +1,6 @@
 from flask import Flask, request, send_file, Response, make_response
 import json
+import sys
 from zatiq_food_images_client import ZatiqFoodImagesClient
 
 application = Flask(__name__)
@@ -24,9 +25,7 @@ def upload_image():
                 return("Error \n %s" % (e))
         response_dict = {'image_url': response}
         json_response = Response(response=json.dumps(response_dict), status=200, mimetype='application/json')
-        import pdb
-        pdb.set_trace()
-        print(json_response)
+        print(json_response, file=sys.stderr)
         return(json_response)
 
 @application.route('/delete/', methods=['POST'])
