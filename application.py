@@ -1,7 +1,10 @@
 from flask import Flask, request, send_file, Response, make_response
 import json
 import sys
+import logging
 from zatiq_food_images_client import ZatiqFoodImagesClient
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s', filename='./app.log', filemode='w')
 
 application = Flask(__name__)
 
@@ -23,6 +26,7 @@ def upload_image():
                 response = zatiq_images.save_image_locally(imagedata)
             except Exception as e:
                 return("Error \n %s" % (e))
+        logging.info({'response': response})
         return(response)
 
 @application.route('/delete/', methods=['POST'])
