@@ -18,17 +18,31 @@ class ZatiqFoodImagesClient(object):
         else:
             return(False)
 
+    def update_image_path(self, imagepath, imagedata):
+        if not imagepath:
+            return('No imagepath provided')
+        if not imagedata:
+            return('No new image provided to replace old image')
+
+        if self.check_image_name_exists(imagepath) == True:
+            if self.delete_local_image(imagepath) == True:
+                return self.save_image_locally(imagedata)
+            else:
+                return('Delete failed')
+        else:
+            return('No such image')
+
     def save_image_locally(self, imagedata):
         if not imagedata:
             return('No image provided')
 
+        b64string = imagedata.encode()
+
         file_name = self.generate_unique_image_name()
-        with open(file_name, 'wb') as f:
-            f.write(base64.decodebytes(imagedata))
+        with open('./images/'+file_name, 'wb') as f:
+            f.write(base64.decodebytes(b64string))
         if self.check_image_name_exists(file_name) == True:
             return(file_name)
-        else:
-            self.save_image_locally(imagedata)
 
     def delete_local_image(self, imagepath):
         if self.check_image_name_exists(imagepath) == True:

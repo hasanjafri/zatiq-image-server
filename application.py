@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file, Response, make_response
+from flask import Flask, request, send_from_directory, jsonify
 import json
 import sys
 import logging
@@ -6,7 +6,7 @@ from zatiq_food_images_client import ZatiqFoodImagesClient
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s', filename='./app.log', filemode='w')
 
-application = Flask(__name__)
+application = Flask(__name__, static_url_path='')
 
 zatiq_images = ZatiqFoodImagesClient()
 
@@ -17,42 +17,49 @@ def test_server_online():
 @application.route('/upload/', methods=['POST'])
 def upload_image():
     if request.method == 'POST':
-        jsonData = request.form['imagedata']
-        if jsonData == None:
+        jsonData = request.get_json()
+        if not jsonData['imagedata']:
             return('No image provided to upload', 400)
         else:
-            imagedata = jsonData
+            imagedata = jsonData['imagedata']
             try:
                 response = zatiq_images.save_image_locally(imagedata)
             except Exception as e:
                 return("Error \n %s" % (e))
-        logging.info({'response': response})
-        return({'response': response})
+        return jsonify(response=response)
+
+@application.route('/update/', methods=['POST'])
+def update_image():
+    if request.method == 'POST':
+        jsonData = request.get_json()
+        if not (jsonData['imagedata'] and jsonData['imagepath']):
+            return('Invalid request', 400)
+        else:
+            imagedata = jsonData['imagedata']
+            imagepath = jsonData['imagepath']
+            try:
+                response = zatiq_images.update_image_path(imagepath, imagedata)
+            except Exception as e:
+                return("Error \n %s" % (e))
+        return jsonify(response=response)
 
 @application.route('/delete/', methods=['POST'])
 def delete_image():
     if request.method == 'POST':
-        jsonData = request.form['imagepath']
-        if jsonData == None:
+        jsonData = request.get_json()
+        if not jsonData['imagepath']:
             return('No image path provided to delete', 400)
         else:
-            imagepath = jsonData
+            imagepath = jsonData['imagepath']
             try:
                 response = zatiq_images.delete_local_image(imagepath)
             except Exception as e:
                 return("Error \n %s" % (e))
-        response_dict = {'image_status': response}
-        return Response(response=json.dumps(response_dict), status=200, mimetype='application/json')
+        return jsonify(response=response)
 
-@application.route('/image/<imagepath>', methods=['GET'])
+@application.route('/image/<imagepath>')
 def get_image(imagepath):
-    if request.method == 'POST':
-        jsonData = request.get_json()
-        if 'imagepath' not in jsonData:
-            return('No image path provided to GET', 400)
-        else:
-            imagepath = jsonData['imagepath']
-            return(send_file('./images'+imagepath, mimetype='image/png'))
+        return(send_from_directory(directory='images', filename=imagepath))
 
 if __name__ == "__main__":
     application.debug = True
