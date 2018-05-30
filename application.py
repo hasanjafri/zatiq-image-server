@@ -27,7 +27,7 @@ def upload_image():
             except Exception as e:
                 return("Error \n %s" % (e))
         logging.info({'response': response})
-        return(response)
+        return({'response': response})
 
 @application.route('/delete/', methods=['POST'])
 def delete_image():
