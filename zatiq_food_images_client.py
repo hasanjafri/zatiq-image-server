@@ -52,6 +52,6 @@ class ZatiqFoodImagesClient(object):
                 return("Error \n %s" % (e))
 
             if self.check_image_name_exists(imagepath) == False:
-                return(True)
+                return('TRUE')
             else:
                 self.delete_local_image(imagepath)

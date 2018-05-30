@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory, jsonify
+from flask import Flask, request, send_from_directory
 import json
 import sys
 import logging
@@ -26,7 +26,7 @@ def upload_image():
                 response = zatiq_images.save_image_locally(imagedata)
             except Exception as e:
                 return("Error \n %s" % (e))
-        return jsonify(response=response)
+        return(response)
 
 @application.route('/update/', methods=['POST'])
 def update_image():
@@ -41,7 +41,7 @@ def update_image():
                 response = zatiq_images.update_image_path(imagepath, imagedata)
             except Exception as e:
                 return("Error \n %s" % (e))
-        return jsonify(response=response)
+        return(response)
 
 @application.route('/delete/', methods=['POST'])
 def delete_image():
@@ -55,7 +55,7 @@ def delete_image():
                 response = zatiq_images.delete_local_image(imagepath)
             except Exception as e:
                 return("Error \n %s" % (e))
-        return jsonify(response=response)
+        return(response)
 
 @application.route('/image/<imagepath>')
 def get_image(imagepath):
