@@ -25,7 +25,7 @@ class ZatiqFoodImagesClient(object):
             return('No new image provided to replace old image')
 
         if self.check_image_name_exists(imagepath) == True:
-            if self.delete_local_image(imagepath) == True:
+            if self.delete_local_image(imagepath) == 'TRUE':
                 return self.save_image_locally(imagedata)
             else:
                 return('Delete failed')
