@@ -38,6 +38,10 @@ class ZatiqFoodImagesClient(object):
 
         b64string = imagedata.encode()
 
+        missing_padding = len(b64string) % 4
+        if missing_padding != 0:
+            b64string += b'='* (4 - missing_padding)
+
         file_name = self.generate_unique_image_name()
         with open('./images/'+file_name, 'wb') as f:
             f.write(base64.decodebytes(b64string))
