@@ -38,10 +38,7 @@ def update_image():
             imagedata = jsonData['imagedata']
             imagepath = jsonData['imagepath']
             print(imagepath)
-            try:
-                response = zatiq_images.update_image_path(imagepath, imagedata)
-            except Exception as e:
-                return("Error \n %s" % (e))
+            response = zatiq_images.update_image_path(imagepath, imagedata)
         return(response)
 
 @application.route('/delete/', methods=['POST'])
