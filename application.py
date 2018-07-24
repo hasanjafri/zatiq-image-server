@@ -37,7 +37,6 @@ def update_image():
         else:
             imagedata = jsonData['imagedata']
             imagepath = jsonData['imagepath']
-            print(imagedata)
             print(imagepath)
             try:
                 response = zatiq_images.update_image_path(imagepath, imagedata)

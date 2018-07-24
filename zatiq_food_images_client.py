@@ -1,11 +1,11 @@
-import secrets
+import uuid
 import base64
 import os
 from pathlib import Path
 
 class ZatiqFoodImagesClient(object):
     def generate_unique_image_name(self):
-        image_name = secrets.token_urlsafe(32)
+        image_name = str(uuid.uuid4())
         if self.check_image_name_exists(image_name) == False:
             return(''+image_name+'.png')
         else:
