@@ -37,11 +37,12 @@ def update_image():
         else:
             imagedata = jsonData['imagedata']
             imagepath = jsonData['imagepath']
-            
-            if zatiq_images.delete_local_image(imagepath) == 'TRUE':
-                response = zatiq_images.save_image_locally(imagedata)
-            else:
-                return "No such image found to update"
+            print(imagedata)
+            print(imagepath)
+            try:
+                response = zatiq_images.update_image_path(imagepath, imagedata)
+            except Exception as e:
+                return("Error \n %s" % (e))
         return(response)
 
 @application.route('/delete/', methods=['POST'])
